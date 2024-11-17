@@ -167,12 +167,6 @@ export const FutureJobsScreen = () => {
               variant="filled"
             />
             <>
-              {data.length === 0 && (
-                <Typography mt={4}>
-                  Você ainda não possui conteúdos favoritados.
-                </Typography>
-              )}
-
               {filterData?.map((content, index) => (
                 <Box key={content.id} mb={1} p={2}>
                   <Box
@@ -202,7 +196,8 @@ export const FutureJobsScreen = () => {
                               userId: 1,
                               contentId: content.id || 0,
                             });
-                            getFavorites();
+                            getAll();
+
                           } catch (error) {
                             console.error(error);
                           }
@@ -222,7 +217,7 @@ export const FutureJobsScreen = () => {
                                 contentId: content.id,
                               },
                             });
-                            getFavorites();
+                            getAll();
                           } catch (error) {
                             console.error(error);
                           }
