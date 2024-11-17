@@ -36,15 +36,17 @@ export function Navbar() {
         justifyContent="space-between"
       >
         <Box display={'flex'} alignItems="center" gap={1}>
-          <Image
-            src="/assets/govbr-logo-large.png"
-            alt="logo"
-            width={100}
-            height={50}
-            style={{
-              objectFit: 'contain',
-            }}
-          />
+          <Link href={'/'}>
+            <Image
+              src="/assets/govbr-logo-large.png"
+              alt="logo"
+              width={100}
+              height={50}
+              style={{
+                objectFit: 'contain',
+              }}
+            />
+          </Link>
           <Typography>Ministério da Educação/CAPES</Typography>
         </Box>
         <Box display={'flex'} alignItems="center" gap={2}>
@@ -129,6 +131,12 @@ export function Navbar() {
                 <MenuItem
                   sx={{
                     p: 2,
+                    '&:hover': {
+                      bgcolor: '#f16421',
+                      color: '#16498b',
+                      fontWeight: 'bold',
+                      transition: '0.3s',
+                    },
                   }}
                 >
                   Buscar assunto
@@ -136,6 +144,12 @@ export function Navbar() {
                 <MenuItem
                   sx={{
                     p: 2,
+                    '&:hover': {
+                      bgcolor: '#f16421',
+                      color: '#16498b',
+                      fontWeight: 'bold',
+                      transition: '0.3s',
+                    },
                   }}
                 >
                   Lista de bases e coleções
@@ -143,6 +157,12 @@ export function Navbar() {
                 <MenuItem
                   sx={{
                     p: 2,
+                    '&:hover': {
+                      bgcolor: '#f16421',
+                      color: '#16498b',
+                      fontWeight: 'bold',
+                      transition: '0.3s',
+                    },
                   }}
                 >
                   Lista de livros
@@ -150,28 +170,56 @@ export function Navbar() {
                 <MenuItem
                   sx={{
                     p: 2,
+                    '&:hover': {
+                      bgcolor: '#f16421',
+                      color: '#16498b',
+                      fontWeight: 'bold',
+                      transition: '0.3s',
+                    },
                   }}
                 >
                   Lista de periódicos
                 </MenuItem>
-                <MenuItem
-                  sx={{
-                    p: 2,
+                <Link
+                  href="/future-jobs"
+                  style={{
+                    textDecoration: 'none',
+                    color: 'black',
                   }}
                 >
-                  Sugestões para Trabalhos Futuros
-                </MenuItem>
+                  <MenuItem
+                    sx={{
+                      p: 2,
+                      '&:hover': {
+                        bgcolor: '#f16421',
+                        color: '#16498b',
+                        fontWeight: 'bold',
+                        transition: '0.3s',
+                      },
+                    }}
+                  >
+                    Sugestões para Trabalhos Futuros
+                  </MenuItem>
+                </Link>
               </Box>
             }
           >
-            <Typography
-              fontSize={19}
-              sx={{
-                cursor: 'pointer',
+            <Link
+              href="/acervo"
+              style={{
+                textDecoration: 'none',
+                color: 'black',
               }}
             >
-              Acervo
-            </Typography>
+              <Typography
+                fontSize={19}
+                sx={{
+                  cursor: 'pointer',
+                }}
+              >
+                Acervo
+              </Typography>
+            </Link>
           </LightTooltip>
           <Typography
             sx={{

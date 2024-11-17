@@ -1,0 +1,145 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8001/api
+    description: Generated server url
+paths:
+  /periodicos-capes/v1/user/favorites:
+    put:
+      tags:
+        - user-controller
+      operationId: putFavorited
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavoriteRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+  /periodicos-capes/v1/user/{userId}/favorites:
+    get:
+      tags:
+        - user-controller
+      operationId: getFavoritesByUserId
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: filter
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            /:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Content'
+  /periodicos-capes/v1/content:
+    get:
+      tags:
+        - content-controller
+      operationId: getAllContents
+      responses:
+        '200':
+          description: OK
+          content:
+            /:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Content'
+  /periodicos-capes/v1/content/{userId}/contentsOpenApi:
+    get:
+      tags:
+        - content-controller
+      operationId: getContentsOpenApi
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            /:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Content'
+  /periodicos-capes/v1/content/futureJobs:
+    get:
+      tags:
+        - content-controller
+      operationId: getAllFutureJobs
+      responses:
+        '200':
+          description: OK
+          content:
+            /:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Content'
+  /periodicos-capes/v1/user/favorites/{userId}/{contentId}:
+    delete:
+      tags:
+        - user-controller
+      operationId: removeFavorite
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: contentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    FavoriteRequestDTO:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        contentId:
+          type: integer
+          format: int64
+    Content:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        resumen:
+          type: string
+        font:
+          type: string
+        link:
+          type: string
+        futureJob:
+          type: boolean
