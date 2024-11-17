@@ -4,27 +4,57 @@ import {
   ArrowForwardIos,
   House,
   Login,
+  Star,
+  StarBorder,
 } from '@mui/icons-material';
 import {
   Content,
   ContentControllerApiFactory,
+  UserControllerApiFactory,
 } from '@/services/openapi-services';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  IconButton,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const { getAllFutureJobs } = ContentControllerApiFactory();
+const {
+  getFavoritesByUserId,
+  removeFavorite,
+  putFavorited,
+} = UserControllerApiFactory();
 
 export const FutureJobsScreen = () => {
   const [data, setData] = useState<Array<Content>>([]);
+  const [dataF, setDataF] = useState<Array<Content>>([]);
+  const [loadingFavorites, setLoadingFavorites] = useState(false);
   const [search, setSearch] = useState('');
   const getFavorites = async () => {
     try {
+      setLoadingFavorites(true);
       const data = await getAllFutureJobs();
       setData(data.data || []);
     } catch (error) {
       console.error(error);
     } finally {
+      setLoadingFavorites(false);
+    }
+  };
+
+  const getAll = async () => {
+    try {
+      const data = await getFavoritesByUserId({
+        userId: 1,
+      });
+      setDataF(data.data || []);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -34,6 +64,7 @@ export const FutureJobsScreen = () => {
 
   useEffect(() => {
     getFavorites();
+    getAll();
   }, []);
 
   return (
@@ -161,6 +192,45 @@ export const FutureJobsScreen = () => {
                       </Typography>{' '}
                       {content.name}
                     </Typography>
+                    {dataF.find((item) => item.id === content.id) ? (
+                      <IconButton
+                        size="small"
+                        disabled={loadingFavorites}
+                        onClick={async () => {
+                          try {
+                            await removeFavorite({
+                              userId: 1,
+                              contentId: content.id || 0,
+                            });
+                            getFavorites();
+                          } catch (error) {
+                            console.error(error);
+                          }
+                        }}
+                      >
+                        <Star color="warning" />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        disabled={loadingFavorites}
+                        size="small"
+                        onClick={async () => {
+                          try {
+                            await putFavorited({
+                              favoriteRequestDTO: {
+                                userId: 1,
+                                contentId: content.id,
+                              },
+                            });
+                            getFavorites();
+                          } catch (error) {
+                            console.error(error);
+                          }
+                        }}
+                      >
+                        <StarBorder color="warning" />
+                      </IconButton>
+                    )}
                   </Box>
 
                   <Box display="flex" alignItems="center" gap={2}>
