@@ -8,7 +8,11 @@ import {
   Star,
   StarBorder,
 } from '@mui/icons-material';
-import { Content, UserControllerApiFactory } from '@/services/openapi-services';
+import {
+  Content,
+  ContentControllerApiFactory,
+  UserControllerApiFactory,
+} from '@/services/openapi-services';
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -28,10 +32,13 @@ const {
   removeFavorite,
 } = UserControllerApiFactory();
 
+const { getAllContents } = ContentControllerApiFactory();
+
 export const MyAccountScreen = () => {
   const [value, setValue] = useState(0);
   const [loadingFavorites, setLoadingFavorites] = useState(false);
   const [data, setData] = useState<Array<Content>>([]);
+  const [dataAll, setDataAll] = useState<Array<Content>>([]);
   const [search, setSearch] = useState('');
   const getFavorites = async () => {
     try {
@@ -46,6 +53,14 @@ export const MyAccountScreen = () => {
       setLoadingFavorites(false);
     }
   };
+  const getAll = async () => {
+    try {
+      const data = await getAllContents({});
+      setDataAll(data.data || []);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const filterData = data.filter((content) =>
     content?.name?.toLowerCase().includes(search.toLowerCase())
@@ -53,6 +68,7 @@ export const MyAccountScreen = () => {
 
   useEffect(() => {
     getFavorites();
+    getAll();
   }, []);
 
   return (
@@ -205,7 +221,7 @@ export const MyAccountScreen = () => {
                   </Box>
                 )}
 
-                {filterData?.map((content, index) => (
+                {(value === 2 ? filterData : dataAll)?.map((content, index) => (
                   <Box key={content.id} mb={1} p={2}>
                     <Box
                       display="flex"
